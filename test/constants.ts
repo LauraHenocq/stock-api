@@ -1,0 +1,1 @@
+export const FAKE_ID = 'fake-generated-id';

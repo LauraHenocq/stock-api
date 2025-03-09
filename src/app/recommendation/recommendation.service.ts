@@ -27,36 +27,31 @@ export class RecommendationService {
   }
 
   private getOrderShedule(initialStock: number, packSize: number, dailyConsumption: number, dailyWeekendConsumption: number): OrderSchedule[] {
-    const result: OrderSchedule[] = [];
+    const orderSchedule: OrderSchedule[] = [];
     let currentDate = new Date('2025-01-05');
     let stock = initialStock;
+    let weeklyConsumption = (5 * dailyConsumption) + (2 * dailyWeekendConsumption);
     
-    for (let i = 0; i < 360; i++) {
+    for (let week = 0; week < 52; week++) {
       const day = currentDate.getDay();
       const consumptionOfTheDay = day === 0 || day === 6 ? dailyWeekendConsumption : dailyConsumption;
       stock -= consumptionOfTheDay;
   
-      if (currentDate.getDay() === 0) { // Sunday
-        const orderAmount = this.calculateOrderAmount(stock, packSize);
-        result.push({
-          date: new Date(currentDate),
-          orderAmount: orderAmount,
-        });
-        stock += orderAmount; // After delivery
-      }
+      const packNumberToOrder = this.calculateOrderAmount(stock, packSize, weeklyConsumption);
+      orderSchedule.push({
+        date: currentDate.toISOString().split('T')[0],
+        packNumberToOrder: packNumberToOrder,
+      });
+
+      stock += (packNumberToOrder * packSize) - weeklyConsumption; // After delivery
   
-      currentDate.setDate(currentDate.getDate() + 1);
+      currentDate.setDate(currentDate.getDate() + 7);
     }
 
-    return result;
+    return orderSchedule;
   }
 
-  private calculateOrderAmount(stock: number, packSize: number): number {
-    if (stock < 0) {
-      const needed = Math.abs(stock);
-      const orders = Math.ceil(needed / packSize);
-      return orders * packSize;
-    }
-    return 0;
+  private calculateOrderAmount(stock: number, packSize: number, weeklyConsumption: number): number {
+    return Math.ceil((weeklyConsumption - stock) / packSize);
   }
 }

@@ -1,6 +1,5 @@
 import { Controller, Body, Get, Query } from '@nestjs/common';
 import { RecommendationService } from './recommendation.service';
-import { CreateOrderRecommendationDto } from './dto/create-order-recommendation.dto';
 import { RecommendationEntity } from './entities/recommendation.entity';
 
 @Controller('recommendation')

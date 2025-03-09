@@ -24,7 +24,8 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is a stock optimization backend built with Nest and Typescript.
+The application calculating yogurt order schedules based on various parameters.
 
 ## Installation
 
@@ -57,6 +58,10 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Test the endpoint
+
+To get the order recommendation from parameters (initialStock, packSize, dailyConsumption and dailyWeekendConsumption), you can use Postman. Do a GET request on the url http://localhost:3000/recommendation?initialStock=6&packSize=6&dailyConsumption=3&dailyWeekendConsumption=4 and see the results you get 
 
 ## Support
 
